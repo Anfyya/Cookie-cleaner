@@ -6,11 +6,11 @@
 网站列表持久化保存
 
 安装方法：
-1.打开 Edge 浏览器，访问 edge://extensions/
-2.开启左下角的 开发人员模式
-3.点击 加载解压缩的扩展
-4.选择 .../edgecookie 文件夹
-5.扩展图标会出现在工具栏，点击即可使用
+1. 打开 Edge 浏览器，访问 edge://extensions/
+2. 开启左下角的 开发人员模式
+3. 点击 加载解压缩的扩展
+4. 选择 .../edgecookie 文件夹
+5. 扩展图标会出现在工具栏，点击即可使用
 
 Features:
 Manually enter a domain to add a website, or add the currently visited site with one click
