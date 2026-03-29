@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 400px;
+      min-height: 300px;
+      font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0078d4, #005a9e);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .header-icon {
+      font-size: 22px;
+    }
+
+    .section {
+      padding: 12px 16px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 添加网站区域 */
+    .add-site {
+      display: flex;
+      gap: 8px;
+    }
+
+    .add-site input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .add-site input:focus {
+      border-color: #0078d4;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: #0078d4;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #005a9e;
+    }
+
+    .btn-add-current {
+      background: #e8f4fd;
+      color: #0078d4;
+      border: 1px solid #b3d7f2;
+      font-size: 12px;
+      padding: 6px 10px;
+      margin-top: 8px;
+      width: 100%;
+    }
+
+    .btn-add-current:hover {
+      background: #d0ebfa;
+    }
+
+    /* 网站列表 */
+    .site-list {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 4px;
+    }
+
+    .site-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .site-list::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 4px;
+    }
+
+    .site-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: white;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      border: 1px solid #eee;
+    }
+
+    .site-item:hover {
+      border-color: #0078d4;
+    }
+
+    .site-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .site-info input[type="checkbox"] {
+      accent-color: #0078d4;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .site-domain {
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-remove {
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      line-height: 1;
+    }
+
+    .btn-remove:hover {
+      background: #fee;
+      color: #d32f2f;
+    }
+
+    /* 清除选项 */
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .option-tag {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .option-tag:hover {
+      border-color: #0078d4;
+    }
+
+    .option-tag.active {
+      background: #e8f4fd;
+      border-color: #0078d4;
+      color: #0078d4;
+    }
+
+    .option-tag input {
+      display: none;
+    }
+
+    /* 操作按钮 */
+    .actions {
+      padding: 12px 16px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-clean {
+      flex: 1;
+      padding: 10px;
+      background: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-clean:hover {
+      background: #b71c1c;
+    }
+
+    .btn-clean:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .btn-clean-all {
+      flex: 1;
+      padding: 10px;
+      background: #fff;
+      color: #d32f2f;
+      border: 2px solid #d32f2f;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-clean-all:hover {
+      background: #fee;
+    }
+
+    /* 空状态 */
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+      font-size: 13px;
+    }
+
+    /* 消息提示 */
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(60px);
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      transition: transform 0.3s ease;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .divider {
+      height: 1px;
+      background: #eee;
+      margin: 0 16px;
+    }
+
+    .select-all-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .select-all-row label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #888;
+      cursor: pointer;
+    }
+
+    .select-all-row input[type="checkbox"] {
+      accent-color: #0078d4;
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+
+    .site-count {
+      font-size: 12px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="header-icon">&#128473;</span>
+    <h1>Cookie Cleaner</h1>
+  </div>
+
+  <!-- 添加网站 -->
+  <div class="section">
+    <div class="section-title">&#10133; 添加网站</div>
+    <div class="add-site">
+      <input type="text" id="siteInput" placeholder="输入域名，如 example.com">
+      <button class="btn btn-primary" id="addBtn">添加</button>
+    </div>
+    <button class="btn btn-add-current" id="addCurrentBtn">&#127760; 添加当前网站</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 清除选项 -->
+  <div class="section">
+    <div class="section-title">&#9881; 清除内容</div>
+    <div class="options" id="cleanOptions">
+      <label class="option-tag active">
+        <input type="checkbox" value="cookies" checked> Cookies
+      </label>
+      <label class="option-tag active">
+        <input type="checkbox" value="cache" checked> 缓存
+      </label>
+      <label class="option-tag active">
+        <input type="checkbox" value="localStorage" checked> 本地存储
+      </label>
+      <label class="option-tag">
+        <input type="checkbox" value="sessionStorage"> 会话存储
+      </label>
+      <label class="option-tag">
+        <input type="checkbox" value="indexedDB"> IndexedDB
+      </label>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 网站列表 -->
+  <div class="section">
+    <div class="section-title">
+      &#128196; 管理的网站 <span class="site-count" id="siteCount"></span>
+    </div>
+    <div class="select-all-row" id="selectAllRow" style="display:none;">
+      <label>
+        <input type="checkbox" id="selectAll"> 全选
+      </label>
+    </div>
+    <div class="site-list" id="siteList">
+      <div class="empty-state">暂无网站，请添加需要清除的网站</div>
+    </div>
+  </div>
+
+  <!-- 操作 -->
+  <div class="actions">
+    <button class="btn-clean" id="cleanBtn" disabled>清除选中网站数据</button>
+    <button class="btn-clean-all" id="cleanAllBtn" style="display:none;">清除全部</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head><title>生成图标</title></head>
+<body>
+<h2>点击按钮生成图标 PNG 文件</h2>
+<p>生成后右键图片 → 另存为，保存到 icons 文件夹</p>
+<canvas id="c16" width="16" height="16"></canvas>
+<canvas id="c48" width="48" height="48"></canvas>
+<canvas id="c128" width="128" height="128"></canvas>
+<br><br>
+<div id="images"></div>
+<script>
+function draw(canvas) {
+  const s = canvas.width;
+  const ctx = canvas.getContext('2d');
+  // 背景圆
+  ctx.beginPath();
+  ctx.arc(s/2, s/2, s/2 - 1, 0, Math.PI * 2);
+  ctx.fillStyle = '#0078d4';
+  ctx.fill();
+  // Cookie 图标 (简化的饼干形状)
+  ctx.fillStyle = 'white';
+  ctx.font = `bold ${s * 0.55}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🍪', s/2, s/2 + s*0.05);
+}
+[16, 48, 128].forEach(size => {
+  const c = document.getElementById('c' + size);
+  draw(c);
+  const img = new Image();
+  img.src = c.toDataURL('image/png');
+  const div = document.createElement('div');
+  div.innerHTML = `<p>icon${size}.png (${size}x${size}):</p>`;
+  const a = document.createElement('a');
+  a.href = img.src;
+  a.download = `icon${size}.png`;
+  a.textContent = `下载 icon${size}.png`;
+  a.style.marginRight = '20px';
+  div.appendChild(img);
+  div.appendChild(document.createElement('br'));
+  div.appendChild(a);
+  document.getElementById('images').appendChild(div);
+});
+</script>
+</body>
+</html>
